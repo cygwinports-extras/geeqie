@@ -1,0 +1,29 @@
+--- origsrc/geeqie-1.4/src/remote.c	2017-12-31 06:31:21.000000000 -0600
++++ src/geeqie-1.4/src/remote.c	2018-02-05 13:53:40.258805200 -0600
+@@ -166,7 +166,7 @@ static gboolean remote_server_read_cb(GI
+ {
+ 	RemoteConnection *rc = data;
+ 	gint fd;
+-	guint alen;
++	socklen_t alen;
+ 
+ 	fd = accept(rc->fd, NULL, &alen);
+ 	if (fd == -1)
+@@ -215,7 +215,7 @@ static RemoteConnection *remote_server_o
+ 	addr.sun_family = AF_UNIX;
+ 	sun_path_len = MIN(strlen(path) + 1, UNIX_PATH_MAX);
+ 	strncpy(addr.sun_path, path, sun_path_len);
+-	if (bind(fd, &addr, sizeof(addr)) == -1 ||
++	if (bind(fd, (const struct sockaddr *)&addr, sizeof(addr)) == -1 ||
+ 	    listen(fd, REMOTE_SERVER_BACKLOG) == -1)
+ 		{
+ 		log_printf("error subscribing to socket: %s\n", strerror(errno));
+@@ -264,7 +264,7 @@ static RemoteConnection *remote_client_o
+ 	addr.sun_family = AF_UNIX;
+ 	sun_path_len = MIN(strlen(path) + 1, UNIX_PATH_MAX);
+ 	strncpy(addr.sun_path, path, sun_path_len);
+-	if (connect(fd, &addr, sizeof(addr)) == -1)
++	if (connect(fd, (const struct sockaddr *)&addr, sizeof(addr)) == -1)
+ 		{
+ 		DEBUG_1("error connecting to socket: %s", strerror(errno));
+ 		close(fd);

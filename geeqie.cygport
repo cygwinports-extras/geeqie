@@ -1,0 +1,21 @@
+NAME="geeqie"
+VERSION=1.4
+RELEASE=1
+CATEGORY="Graphics"
+SUMMARY="Image viewer based on GQview"
+DESCRIPTION="Geeqie is a lightweight image viewer.  It can be used as a simple,
+fast, database-free image viewer, but equally it can be used to manage large
+collections of images."
+HOMEPAGE="http://geeqie.org/"
+SRC_URI="http://geeqie.org/geeqie-${VERSION}.tar.xz"
+PATCH_URI="
+	https://src.fedoraproject.org/cgit/rpms/geeqie.git/plain/geeqie-1.4-Wno-unused-but-set-variable.patch
+	https://src.fedoraproject.org/cgit/rpms/geeqie.git/plain/geeqie-1.4-goodbye-changelog.patch
+	1.4-cygwin-compile.patch
+	1.4-lua51.patch
+	1.4-vpath.patch
+"
+
+REQUIRES="exiftran exiv2 ImageMagick zenity"
+
+CYGCONF_ARGS="--with-readmedir=/usr/share/doc/${NAME}"
